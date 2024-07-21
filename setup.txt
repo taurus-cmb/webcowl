@@ -1,0 +1,9 @@
+# make subdir for API server
+mkdir api
+cd api
+# create python virtual environment
+python -m venv venv
+source venv/bin/activate
+pip install flask python-dotenv numpy
+# hack for getdata. better to install from source
+ln -s /home/sjb/miniconda3/envs/py38/lib/python3.8/site-packages/pygetdata.cpython-38-x86_64-linux-gnu.so venv/lib/python3.8/site-packages/
