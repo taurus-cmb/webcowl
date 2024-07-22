@@ -1,3 +1,10 @@
+Flask API server
+================
+
+Flask is a python micro-framework for web applications. In this case I am using
+it just for a REST API server from which the web client can request data.
+
+```
 # make subdir for API server
 mkdir api
 cd api
@@ -7,3 +14,25 @@ source venv/bin/activate
 pip install flask python-dotenv numpy
 # hack for getdata. better to install from source
 ln -s /home/sjb/miniconda3/envs/py38/lib/python3.8/site-packages/pygetdata.cpython-38-x86_64-linux-gnu.so venv/lib/python3.8/site-packages/
+```
+
+React web client
+================
+
+The front-end, and the bulk of the code, will be written in React, a javascript
+user interface library (we use typescript here). The application base will use
+Vite, with the additional libraries TanStack Query and Chakra UI.
+
+```
+# create the client application template
+# assumes npm is installed
+npm create vite@latest
+✔ Project name: … client
+✔ Select a framework: › React
+✔ Select a variant: › TypeScript + SWC
+
+cd client
+npm install
+npm i @tanstack/react-query
+npm i @chakra-ui/react @emotion/react @emotion/styled framer-motion
+```
