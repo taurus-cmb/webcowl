@@ -1,24 +1,44 @@
-import { useState } from 'react'
-import './App.css'
 import { HStack, VStack, SimpleGrid, Heading, Text } from '@chakra-ui/react'
-import { useQuery, useQueryClient, QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { useQuery, QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { Outlet, RouterProvider, createRouter, createRoute, createRootRoute } from '@tanstack/react-router'
+import { TanStackRouterDevtools } from '@tanstack/router-devtools'
 
 const queryClient = new QueryClient()
 
-function App() {
-  const [count, setCount] = useState(0)
+const rootRoute = createRootRoute({
+  component: () => (
+    <>
+      <QueryClientProvider client={queryClient}>
+        <Outlet />
+        {false ? <TanStackRouterDevtools /> : ""}
+      </QueryClientProvider>
+    </>
+  ),
+})
 
+const indexRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/",
+  component: () => <WebCowl />,
+})
+
+const routeTree = rootRoute.addChildren([indexRoute])
+const router = createRouter({ routeTree })
+
+function App() {
+  return <RouterProvider router={router} />
+}
+
+function WebCowl() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <HStack spacing={4}>
-        <DataBox bg="tan" header="Test Data">
-          <Value label="Time" value="Mon May 25, 2025 10:25:31" />
-          <Value label="Frame" value={2191} />
-          <Value label="Noise" value={1.32} />
-          <Value label="Steppy" value={22.98} />
-        </DataBox>
-      </HStack>
-    </QueryClientProvider>
+    <HStack spacing={4}>
+      <DataBox bg="tan" header="Test Data">
+        <TimeValue label="Time" field="TIME" />
+        <Value label="Frame" field="frame" />
+        <Value label="Noise" field="NOISE" />
+        <Value label="Steppy" field="STEPPY" />
+      </DataBox>
+    </HStack>
   )
 }
 
@@ -28,7 +48,7 @@ function DataBox({ bg, header, children }) {
   return (
     <VStack bg={bg} p={4} spacing={1}>
       <Heading as="h3" size="m">{header}</Heading>
-      <SimpleGrid columns={3} columnGap={4}>
+      <SimpleGrid columns={2} columnGap={4}>
         {children}
       </SimpleGrid>
     </VStack>
@@ -36,22 +56,50 @@ function DataBox({ bg, header, children }) {
 }
 
 // FIXME types
-function Value({ label, value }) {
+function Value({ label, field }) {
   // const queryClient = useQueryClient();
-  const {isLoading, isError, data, error} = useQuery({queryKey: ["test"], queryFn: async () => {
-   const response = await fetch("/api/test/")
-   if (!response.ok) {
-     throw new Error("Could not get test data")
-   }
-   return response.json()
-  } });
-  
+  const { isLoading, isError, data, error } = useQuery({
+    queryKey: ["api_test"],
+    queryFn: async () => {
+      const response = await fetch("/api/test")
+      if (!response.ok) {
+        throw new Error("Could not get test data")
+      }
+      return response.json()
+    },
+    refetchInterval: 500,
+  });
+
   return (
     <>
       <Text>{label}</Text>
-      <Text>{value}</Text>
       <Text>
-        {isLoading ? "Loading..." : isError ? "Error: " + error : data}
+        {isLoading ? "Loading..." : isError ? "Error: " + error : data[field]}
+      </Text>
+    </>
+  )
+}
+
+function TimeValue({ label, field }) {
+  // const queryClient = useQueryClient();
+  const { isLoading, isError, data, error } = useQuery({
+    queryKey: ["api_test"],
+    queryFn: async () => {
+      const response = await fetch("/api/test")
+      if (!response.ok) {
+        throw new Error("Could not get test data")
+      }
+      return response.json()
+    },
+    refetchInterval: 500,
+  });
+
+  return (
+    <>
+      <Text>{label}</Text>
+      <Text>
+        {isLoading ? "Loading..." : isError ? "Error: " + error
+          : (new Date(data[field] * 1000)).toLocaleString()}
       </Text>
     </>
   )

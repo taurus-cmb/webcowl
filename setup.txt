@@ -35,4 +35,9 @@ cd client
 npm install
 npm i @tanstack/react-query
 npm i @chakra-ui/react @emotion/react @emotion/styled framer-motion
+
+# routes were gobbbling up API reqeusts, so try to install a router too
+npm install @tanstack/react-router
+npm install --save-dev @tanstack/router-plugin @tanstack/router-devtools
+
 ```
