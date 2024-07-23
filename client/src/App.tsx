@@ -33,10 +33,10 @@ function WebCowl() {
   return (
     <HStack spacing={4}>
       <DataBox bg="tan" header="Test Data">
-        <TimeValue label="Time" field="TIME" />
-        <Value label="Frame" field="frame" />
-        <Value label="Noise" field="NOISE" />
-        <Value label="Steppy" field="STEPPY" />
+        <Value label="Time" field="TIME" formatter={format_date} />
+        <Value label="Frame" field="frame" formatter={String} />
+        <Value label="Noise" field="NOISE" formatter={format_number(2)} />
+        <Value label="Steppy" field="STEPPY" formatter={format_number(2)} />
       </DataBox>
     </HStack>
   )
@@ -55,32 +55,21 @@ function DataBox({ bg, header, children }) {
   )
 }
 
-// FIXME types
-function Value({ label, field }) {
-  // const queryClient = useQueryClient();
-  const { isLoading, isError, data, error } = useQuery({
-    queryKey: ["api_test"],
-    queryFn: async () => {
-      const response = await fetch("/api/test")
-      if (!response.ok) {
-        throw new Error("Could not get test data")
-      }
-      return response.json()
-    },
-    refetchInterval: 500,
-  });
+function format_date(value) {
+  return (new Date(value * 1000)).toLocaleString()
+}
 
-  return (
-    <>
-      <Text>{label}</Text>
-      <Text>
-        {isLoading ? "Loading..." : isError ? "Error: " + error : data[field]}
-      </Text>
-    </>
+function format_number(decimals, options = {}) {
+  return (val) => val.toLocaleString(
+    undefined,
+    { minimumFractionDigits: decimals, maximumFractionDigits: decimals, ...options }
   )
 }
 
-function TimeValue({ label, field }) {
+const format_default = (val) => String(val)
+
+// FIXME types
+function Value({ label, field, formatter=format_default}) {
   // const queryClient = useQueryClient();
   const { isLoading, isError, data, error } = useQuery({
     queryKey: ["api_test"],
@@ -98,8 +87,7 @@ function TimeValue({ label, field }) {
     <>
       <Text>{label}</Text>
       <Text>
-        {isLoading ? "Loading..." : isError ? "Error: " + error
-          : (new Date(data[field] * 1000)).toLocaleString()}
+        {isLoading ? "Loading..." : isError ? "Error: " + error : formatter(data[field])}
       </Text>
     </>
   )
