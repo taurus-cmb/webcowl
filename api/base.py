@@ -1,10 +1,12 @@
-from flask import Flask
+from flask import Flask, Blueprint
 import pygetdata as gd
 import os
 
-api = Flask(__name__)
+app = Flask(__name__)
 
-@api.route('/test')
+api_bp = Blueprint("api", __name__)
+
+@api_bp.route('/test')
 def test_data():
     response = dict()
 
@@ -20,3 +22,7 @@ def test_data():
     response["frame"] = eof
 
     return response
+
+
+# this must happen after the routes are declared
+app.register_blueprint(api_bp, url_prefix="/api")
