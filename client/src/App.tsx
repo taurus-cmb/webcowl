@@ -28,7 +28,7 @@ function DataBox({ bg, header, children }) {
   return (
     <VStack bg={bg} p={4} spacing={1}>
       <Heading as="h3" size="m">{header}</Heading>
-      <SimpleGrid columns={2} columnGap={4}>
+      <SimpleGrid columns={3} columnGap={4}>
         {children}
       </SimpleGrid>
     </VStack>
@@ -37,13 +37,22 @@ function DataBox({ bg, header, children }) {
 
 // FIXME types
 function Value({ label, value }) {
-  //const queryClient = useQueryClient();
-  //const query = useQuery({queryKey: "test", queryFn=getTestData});
+  // const queryClient = useQueryClient();
+  const {isLoading, isError, data, error} = useQuery({queryKey: ["test"], queryFn: async () => {
+   const response = await fetch("/api/test/")
+   if (!response.ok) {
+     throw new Error("Could not get test data")
+   }
+   return response.json()
+  } });
   
   return (
     <>
       <Text>{label}</Text>
       <Text>{value}</Text>
+      <Text>
+        {isLoading ? "Loading..." : isError ? "Error: " + error : data}
+      </Text>
     </>
   )
 }
