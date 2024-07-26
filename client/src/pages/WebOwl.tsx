@@ -5,7 +5,7 @@ import { OwlValue, format_date, format_number } from '../components/OwlValue'
 export function WebOwl() {
   return (
     <HStack spacing={4}>
-      <OwlBox bg="tan" header="Test Data">
+      <OwlBox header="Test Data">
         <OwlValue label="Time" field="TIME" formatter={format_date} />
         <OwlValue label="Frame" field="frame" formatter={String} />
         <OwlValue label="Noise" field="NOISE" formatter={format_number(2)} />
