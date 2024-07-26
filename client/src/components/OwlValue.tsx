@@ -1,5 +1,6 @@
 import { Text, Tr, Td } from '@chakra-ui/react'
 import { useQuery } from '@tanstack/react-query'
+import { useSharedData } from '../contexts/SharedDataProvider'
 
 export function format_date(value: number) {
   return (new Date(value * 1000)).toLocaleString()
@@ -15,6 +16,10 @@ export function format_number(decimals: number, options = {}) {
 const format_default = (val: number) => String(val)
 
 export function OwlValue({ label, field, formatter = format_default }: { label: string, field: string, formatter: Function }) {
+  const { addField } = useSharedData();
+  // FIXME should this be in a callback?
+  addField(field);
+
   // const queryClient = useQueryClient();
   const { isLoading, isError, data, error } = useQuery({
     queryKey: ["api_test"],
