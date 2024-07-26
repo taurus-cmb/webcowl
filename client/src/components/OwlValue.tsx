@@ -1,4 +1,4 @@
-import { Text } from '@chakra-ui/react'
+import { Text, Tr, Td } from '@chakra-ui/react'
 import { useQuery } from '@tanstack/react-query'
 
 export function format_date(value: number) {
@@ -29,12 +29,12 @@ export function OwlValue({ label, field, formatter = format_default }: { label: 
   });
 
   return (
-    <>
-      <Text>{label}</Text>
-      <Text>
+    <Tr>
+      <Td p={1}><Text>{label}</Text></Td>
+      <Td p={1}><Text>
         {isLoading ? "Loading..." : isError ? "Error: " + error : formatter(data[field])}
-      </Text>
-    </>
+      </Text></Td>
+    </Tr>
   )
 }
 
