@@ -43,7 +43,7 @@ function WebCowl() {
   )
 }
 
-function DataBox({ bg, header, children }: {bg: string, header: string, children: React.ReactNode}) {
+function DataBox({ bg, header, children }: {bg: string, header: string, children?: React.ReactNode}) {
   // TODO maybe build around Table instead?
   return (
     <VStack bg={bg} p={4} spacing={1}>
