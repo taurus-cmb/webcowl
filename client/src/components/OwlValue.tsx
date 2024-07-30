@@ -1,5 +1,4 @@
 import { Text, Tr, Td } from '@chakra-ui/react'
-import { useQuery } from '@tanstack/react-query'
 import { useSharedData } from '../contexts/SharedDataProvider'
 
 export function format_date(value: number) {
@@ -15,29 +14,22 @@ export function format_number(decimals: number, options = {}) {
 
 const format_default = (val: number) => String(val)
 
-export function OwlValue({ label, field, formatter = format_default }: { label: string, field: string, formatter: Function }) {
-  const { addField } = useSharedData();
-  // FIXME should this be in a callback?
-  addField(field);
+function format_undefined_wrapper(val: number, formatter: Function) {
+  if (val === undefined) {
+    return "undefined"
+  } else {
+    return formatter(val)
+  }
+}
 
-  // const queryClient = useQueryClient();
-  const { isLoading, isError, data, error } = useQuery({
-    queryKey: ["api_test"],
-    queryFn: async () => {
-      const response = await fetch("/api/test")
-      if (!response.ok) {
-        throw new Error("Could not get test data")
-      }
-      return response.json()
-    },
-    refetchInterval: 500,
-  });
+export function OwlValue({ label, field, formatter = format_default }: { label: string, field: string, formatter: Function }) {
+  const { isLoading, isError, data } = useSharedData(field);
 
   return (
     <Tr>
       <Td p={1}><Text>{label}</Text></Td>
       <Td p={1}><Text>
-        {isLoading ? "Loading..." : isError ? "Error: " + error : formatter(data[field])}
+        {isLoading ? "Loading..." : isError ? "Error..." : format_undefined_wrapper(data[field], formatter)}
       </Text></Td>
     </Tr>
   )
