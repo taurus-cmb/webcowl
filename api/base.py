@@ -19,7 +19,7 @@ def test_data():
     eof = df.nframes - 1
     for field in ["TIME", "NOISE", "STEPPY"]:
         response[field] = df.getdata(field, first_frame=eof, num_frames=1)[-1]
-    response["frame"] = eof
+    response["INDEX"] = eof
 
     return response
 

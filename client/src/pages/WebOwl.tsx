@@ -9,7 +9,7 @@ export function WebOwl() {
       <HStack spacing={4}>
         <OwlBox header="Test Data">
           <OwlValue label="Time" field="TIME" formatter={format_date} />
-          <OwlValue label="Frame" field="frame" formatter={String} />
+          <OwlValue label="Frame" field="INDEX" formatter={String} />
           <OwlValue label="Noise" field="NOISE" formatter={format_number(2)} />
           <OwlValue label="Steppy" field="STEPPY" formatter={format_number(2)} />
           <OwlValue label="Steppy 2" field="STEPPY" formatter={format_number(3)} />
