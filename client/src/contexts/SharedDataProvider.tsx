@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, ReactNode } from "react"
+import { createContext, useContext, useState, ReactNode, useEffect } from "react"
 import { useQuery } from '@tanstack/react-query'
 import { Text } from "@chakra-ui/react"
 
@@ -64,7 +64,8 @@ export function SharedDataProvider({ children }: { children: ReactNode}) {
 
 export function useSharedData(field: string) {
   let context = useContext(sharedDataContext)
-  // FIXME this causes a warning about updating SharedDataProvider while rendering OwlValue
-  context.addField(field)
+  // FIXME making this  an effect gets rid of race condition warning
+  // but now I don't get all the fields added
+  useEffect(() => {context.addField(field)}, [field])
   return context
 }
