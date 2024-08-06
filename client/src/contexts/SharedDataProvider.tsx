@@ -4,6 +4,7 @@ import { Text } from "@chakra-ui/react"
 
 const defaultValue = {
   addField: (_: string) => { return },
+  fields: new Set(["INDEX"]),
   isLoading: true,
   isError: false,
   data: {}, //new Map(),
@@ -52,7 +53,7 @@ export function SharedDataProvider({ children }: { children: ReactNode}) {
 
 
   return (
-    <sharedDataContext.Provider value={{addField, isLoading, isError, data, error}}>
+    <sharedDataContext.Provider value={{addField, fields, isLoading, isError, data, error}}>
       <Text>Test: [{new Array(fields)}]</Text>
       <Text>
         Data status: {isLoading ? "Loading..." : isError ? "Error: " + error : "Loaded index: " + data["INDEX"]}
@@ -64,8 +65,7 @@ export function SharedDataProvider({ children }: { children: ReactNode}) {
 
 export function useSharedData(field: string) {
   let context = useContext(sharedDataContext)
-  // FIXME making this  an effect gets rid of race condition warning
-  // but now I don't get all the fields added
-  useEffect(() => {context.addField(field)}, [field])
+  // TODO this might be O(N^2), but seems fine for now, and only happens once
+  useEffect(() => {context.addField(field)}, [field, context.fields])
   return context
 }
