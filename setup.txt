@@ -41,3 +41,10 @@ npm install @tanstack/react-router
 npm install --save-dev @tanstack/router-plugin @tanstack/router-devtools
 
 ```
+
+Running things
+==============
+pypthon ./fake_data.py
+cd client
+npm run dev
+npm run backend
