@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, ReactNode, useEffect } from "react"
 import { useQuery } from '@tanstack/react-query'
-import { Text } from "@chakra-ui/react"
+import { Text, Flex } from "@chakra-ui/react"
 
 const defaultValue = {
   addField: (_: string) => { return },
@@ -37,7 +37,12 @@ export function SharedDataProvider({ children }: { children: ReactNode }) {
 
     if (!response.ok) {
       const text = await response.text()
-      throw new Error("Error: " + text)
+      let message = "Code: " + response.status + "."
+      if (text) {
+        message += " " + text
+      }
+      console.log(message)
+      throw new Error(message)
     }
     const obj = response.json()
     // FIXME when returning a map, always get undefined values
@@ -60,13 +65,25 @@ export function SharedDataProvider({ children }: { children: ReactNode }) {
   //   data_def = new Map([["INDEX", -1]])
   // }
 
+  let bg;
+  let text;
+  if (isError) {
+    bg = "red.200"
+    text = String(error)
+    console.log(error)
+  } else if (isLoading) {
+    bg = "yellow.200"
+    text = "Loading..."
+  } else {
+    bg = "blue.200"
+    text = "Good. Index: " + data["INDEX"]
+  }
 
   return (
     <sharedDataContext.Provider value={{ addField, fields, isLoading, isError, data, error }}>
-      <Text>Test: [{new Array(...fields)}]</Text>
-      <Text>
-        Data status: {isLoading ? "Loading..." : isError ? "Error: " + error : "Loaded index: " + data["INDEX"]}
-      </Text>
+      <Flex bg={bg} position="fixed" bottom={0} width="100%">
+        <Text> {text} </Text>
+      </Flex>
       {children}
     </sharedDataContext.Provider>
   )
