@@ -37,11 +37,10 @@ export function SharedDataProvider({ children }: { children: ReactNode }) {
 
     if (!response.ok) {
       const text = await response.text()
-      let message = "Code: " + response.status + "."
+      let message = "(" + response.status + ")"
       if (text) {
-        message += " " + text
+        message += ": " + text
       }
-      console.log(message)
       throw new Error(message)
     }
     const obj = response.json()
@@ -70,7 +69,6 @@ export function SharedDataProvider({ children }: { children: ReactNode }) {
   if (isError) {
     bg = "red.200"
     text = String(error)
-    console.log(error)
   } else if (isLoading) {
     bg = "yellow.200"
     text = "Loading..."

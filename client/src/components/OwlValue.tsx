@@ -14,22 +14,31 @@ export function format_number(decimals: number, options = {}) {
 
 const format_default = (val: number) => String(val)
 
-function format_undefined_wrapper(val: number, formatter: Function) {
-  if (val === undefined) {
-    return "undefined"
+// Wrap the formatter function, handling special cases when either
+// data doesn't exist, or doesn't include desired field
+// FIXME make data not any type
+function format_wrapper(data: any, field: string, formatter: Function) {
+  if (data === undefined) {
+    // no data has been received
+    return "Load"
   } else {
+    const val = data[field]
+    if (val === undefined) {
+      // data received, but doesn't contain this field
+      return "undefined"
+    }
     return formatter(val)
   }
 }
 
 export function OwlValue({ label, field, formatter = format_default }: { label: string, field: string, formatter: Function }) {
-  const { isLoading, isError, data } = useSharedData(field);
+  const { data } = useSharedData(field);
 
   return (
     <Tr>
       <Td p={1}><Text>{label}</Text></Td>
       <Td p={1}><Text>
-        {isLoading ? "Loading..." : isError ? "Error..." : format_undefined_wrapper(data[field], formatter)}
+        {format_wrapper(data, field, formatter)}
       </Text></Td>
     </Tr>
   )
