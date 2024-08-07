@@ -62,12 +62,12 @@ export function SharedDataProvider({ children }: { children: ReactNode }) {
 
 
   return (
-    <sharedDataContext.Provider value={{addField, fields, isLoading, isError, data, error}}>
-      <Text>Test: [{new Array(fields)}]</Text>
+    <sharedDataContext.Provider value={{ addField, fields, isLoading, isError, data, error }}>
+      <Text>Test: [{new Array(...fields)}]</Text>
       <Text>
         Data status: {isLoading ? "Loading..." : isError ? "Error: " + error : "Loaded index: " + data["INDEX"]}
       </Text>
-      { children }
+      {children}
     </sharedDataContext.Provider>
   )
 }
@@ -75,6 +75,6 @@ export function SharedDataProvider({ children }: { children: ReactNode }) {
 export function useSharedData(field: string) {
   let context = useContext(sharedDataContext)
   // TODO this might be O(N^2), but seems fine for now, and only happens once
-  useEffect(() => {context.addField(field)}, [field, context.fields])
+  useEffect(() => { context.addField(field) }, [field, context.fields])
   return context
 }
