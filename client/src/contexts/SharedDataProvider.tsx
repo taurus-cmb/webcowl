@@ -13,22 +13,8 @@ const defaultValue = {
 
 const sharedDataContext = createContext(defaultValue)
 
-async function dataQuery() {
-      const response = await fetch("/api/test")
-      if (!response.ok) {
-        const text = await response.text()
-        throw new Error("Error: " + text)
-      }
-      const obj = response.json()
-      // FIXME when returning a map, always get undefined values
-      // properties of obj depend on requested fields
-      // to be more typescript friendly, return a Map instead
-      //return new Map<string, number>(Object.entries(obj))
-      return obj
-  }
-
-export function SharedDataProvider({ children }: { children: ReactNode}) {
-  const [fields, setFields] = useState(new Set(["INDEX"]));  
+export function SharedDataProvider({ children }: { children: ReactNode }) {
+  const [fields, setFields] = useState(new Set(["INDEX"]));
 
   function addField(field: string) {
     if (!fields.has(field)) {
@@ -38,10 +24,33 @@ export function SharedDataProvider({ children }: { children: ReactNode}) {
     }
   }
 
+  async function dataQuery() {
+    const fieldsObject = { fields: new Array(...fields) }
+    const response = await fetch("/api/latest", {
+      // learn more about this API here: https://graphql-pokemon2.vercel.app/
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json;charset=UTF-8',
+      },
+      body: JSON.stringify(fieldsObject),
+    })
+
+    if (!response.ok) {
+      const text = await response.text()
+      throw new Error("Error: " + text)
+    }
+    const obj = response.json()
+    // FIXME when returning a map, always get undefined values
+    // properties of obj depend on requested fields
+    // to be more typescript friendly, return a Map instead
+    //return new Map<string, number>(Object.entries(obj))
+    return obj
+  }
+
   const { isLoading, isError, data, error } = useQuery({
     queryKey: ["api_test"],
     queryFn: dataQuery,
-    refetchInterval: 500,
+    refetchInterval: 2000,
   });
 
 

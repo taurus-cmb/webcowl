@@ -13,6 +13,7 @@ export function WebOwl() {
           <OwlValue label="Noise" field="NOISE" formatter={format_number(2)} />
           <OwlValue label="Steppy" field="STEPPY" formatter={format_number(2)} />
           <OwlValue label="Steppy 2" field="STEPPY" formatter={format_number(3)} />
+          <OwlValue label="Bad" field="BAD" formatter={format_number(3)} />
         </OwlBox>
       </HStack>
     </SharedDataProvider>
