@@ -1,7 +1,7 @@
-import { HStack } from '@chakra-ui/react'
-import { OwlBox } from '../components/OwlBox'
-import { OwlValue, format_date, format_number } from '../components/OwlValue'
-import { SharedDataProvider } from '../contexts/SharedDataProvider'
+import { HStack } from "@chakra-ui/react";
+import { OwlBox } from "../components/OwlBox";
+import { OwlValue, format_date, format_number } from "../components/OwlValue";
+import { SharedDataProvider } from "../contexts/SharedDataProvider";
 
 export function WebOwl() {
   return (
@@ -15,7 +15,5 @@ export function WebOwl() {
         </OwlBox>
       </HStack>
     </SharedDataProvider>
-  )
+  );
 }
-
-
