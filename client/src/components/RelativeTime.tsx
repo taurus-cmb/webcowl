@@ -2,23 +2,27 @@ import { useState, useEffect } from "react";
 
 function get_relative_date_string(date: Date): [string, number] {
   const formatter = new Intl.RelativeTimeFormat("en");
-  const ranges = {
-    years: 3600 * 24 * 365,
-    months: 3600 * 24 * 30,
-    weeks: 3600 * 24 * 7,
-    days: 3600 * 24,
-    hours: 3600,
-    minutes: 60,
-    seconds: 1,
-  };
+  const ranges: { unit: Intl.RelativeTimeFormatUnit; len: number; mult: number }[] = [
+    { unit: "years", len: 3600 * 24 * 365, mult: 1 },
+    { unit: "months", len: 3600 * 24 * 30, mult: 1 },
+    { unit: "weeks", len: 3600 * 24 * 7, mult: 1 },
+    { unit: "days", len: 3600 * 24, mult: 1 },
+    { unit: "hours", len: 3600, mult: 1 },
+    { unit: "minutes", len: 60 * 5, mult: 5 },
+    { unit: "minutes", len: 60, mult: 1 },
+    { unit: "seconds", len: 5, mult: 5 },
+  ];
   const secondsElapsed = (date.getTime() - Date.now()) / 1000;
-  let key: keyof typeof ranges;
-  for (key in ranges) {
-    if (ranges[key] < Math.abs(secondsElapsed)) {
-      const delta = secondsElapsed / ranges[key];
-      const relativeString = formatter.format(Math.round(delta), key);
+  for (const idx in ranges) {
+    const { unit, len, mult } = ranges[idx];
+    if (len < Math.abs(secondsElapsed)) {
+      const delta = secondsElapsed / len;
+      // always round towards zero
+      // instead of floor that rounds negative numbers further from zero
+      const rounded = Math.sign(delta) * Math.floor(Math.abs(delta)) * mult;
+      const relativeString = formatter.format(rounded, unit);
       // update after half of unit, but not longer than 2 minutes
-      const updateSeconds = Math.min(ranges[key] / 2, 120);
+      const updateSeconds = Math.min(len / 2, 120);
       return [relativeString, updateSeconds];
     }
   }
