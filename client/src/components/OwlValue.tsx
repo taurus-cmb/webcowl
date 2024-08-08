@@ -1,5 +1,5 @@
 import { Text, Tr, Td } from "@chakra-ui/react";
-import { useSharedData } from "../contexts/SharedDataProvider";
+import { useSharedData, DataType } from "../contexts/SharedDataProvider";
 import { RelativeTime } from "./RelativeTime";
 
 /**
@@ -48,8 +48,7 @@ const format_default = (val: number) => String(val);
 
 // Wrap the formatter function, handling special cases when either
 // data doesn't exist, or doesn't include desired field
-// FIXME make data not any type
-function format_wrapper(data: any, field: string, formatter: Function) {
+function format_wrapper(data: DataType, field: string, formatter: Function) {
   if (data === undefined) {
     // no data has been received
     return "Load";

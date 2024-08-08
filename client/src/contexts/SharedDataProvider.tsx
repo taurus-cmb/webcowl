@@ -2,6 +2,10 @@ import { createContext, useContext, useState, ReactNode, useEffect } from "react
 import { useQuery } from "@tanstack/react-query";
 import { Text, Flex } from "@chakra-ui/react";
 
+export interface DataType {
+  [key: string]: number;
+}
+
 const defaultValue = {
   addField: (_: string) => {
     return;
@@ -9,7 +13,7 @@ const defaultValue = {
   fields: new Set(["INDEX"]),
   isLoading: true,
   isError: false,
-  data: {}, //new Map(),
+  data: {} as DataType,
   error: null as Error | null,
 };
 
@@ -45,12 +49,7 @@ export function SharedDataProvider({ children }: { children: ReactNode }) {
       }
       throw new Error(message);
     }
-    const obj = response.json();
-    // FIXME when returning a map, always get undefined values
-    // properties of obj depend on requested fields
-    // to be more typescript friendly, return a Map instead
-    //return new Map<string, number>(Object.entries(obj))
-    return obj;
+    return response.json();
   }
 
   const { isLoading, isError, data, error } = useQuery({
@@ -58,12 +57,6 @@ export function SharedDataProvider({ children }: { children: ReactNode }) {
     queryFn: dataQuery,
     refetchInterval: 2000,
   });
-
-  // when return a map, it can be undefined. create a special map for that case
-  // let data_def = data;
-  // if (data_def === undefined) {
-  //   data_def = new Map([["INDEX", -1]])
-  // }
 
   let bg;
   let text;
