@@ -1,3 +1,10 @@
+Setup
+=====
+
+This documents the original setup of the developmnt environments used in this
+project. If setting up for yourself, instead follow the Setup instructions in
+README.md. That will recreate the environments, rather than build from scratch.
+
 Flask API server
 ================
 
@@ -41,10 +48,3 @@ npm install @tanstack/react-router
 npm install --save-dev @tanstack/router-plugin @tanstack/router-devtools
 
 ```
-
-Running things
-==============
-pypthon ./fake_data.py
-cd client
-npm run dev
-npm run backend
