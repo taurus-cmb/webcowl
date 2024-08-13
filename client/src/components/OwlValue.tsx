@@ -1,6 +1,7 @@
 import { Text, Tr, Td } from "@chakra-ui/react";
 import { useSharedData, DataType } from "../contexts/SharedDataProvider";
 import { RelativeTime } from "./RelativeTime";
+import { ValueStyleRange } from "./ValueStyleRange";
 
 /**
  * Format value to a date, assuming C/UNIX time in seconds
@@ -46,40 +47,41 @@ export function format_number(decimals: number, options = {}) {
 
 const format_default = (val: number) => String(val);
 
-// Wrap the formatter function, handling special cases when either
-// data doesn't exist, or doesn't include desired field
-function format_wrapper(data: DataType, field: string, formatter: Function) {
-  if (data === undefined) {
-    // no data has been received
-    return "Load";
-  } else {
-    const val = data[field];
-    if (val === undefined) {
-      // data received, but doesn't contain this field
-      return "undefined";
-    }
-    return formatter(val);
-  }
-}
-
 export function OwlValue({
   label,
   field,
+  limits = undefined,
   formatter = format_default,
 }: {
   label: string;
   field: string;
+  limits?: ValueStyleRange | undefined;
   formatter: Function;
 }) {
   const { data } = useSharedData(field);
 
+  let text = "Load";
+  let style = {};
+  if (data !== undefined) {
+    const val = data[field];
+    if (val === undefined) {
+      // data received, but doesn't contain this field
+      text = "undefined";
+    } else {
+      text = formatter(val);
+      if (limits !== undefined) {
+        style = limits.getStyle(val);
+      }
+    }
+  }
+
   return (
-    <Tr>
+    <Tr {...style}>
       <Td p={1}>
         <Text>{label}</Text>
       </Td>
       <Td p={1}>
-        <Text>{format_wrapper(data, field, formatter)}</Text>
+        <Text>{text}</Text>
       </Td>
     </Tr>
   );
