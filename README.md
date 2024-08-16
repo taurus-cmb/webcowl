@@ -37,6 +37,12 @@ venv/bin/pip install -r requirements.txt
 However, the pygetdata dependency does not play nice with pip. Need to install
 that manually. TBD: more info.
 
+To run in a testing mode without requiring pygetdata, this environment variable
+can be set before starting the API server:
+```
+export WEBCOWL_FAKE_DATA=True
+```
+
 ### client environment
 
 ```
