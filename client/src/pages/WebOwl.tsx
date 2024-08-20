@@ -5,7 +5,7 @@ import { SharedDataProvider } from "../contexts/SharedDataProvider";
 import { StyleLimits } from "../components/StyleLimits";
 
 let limits = new StyleLimits(
-  { xlo: -10, lo: -2, hi: 2, xhi: 10 },
+  { xlo: -10, lo: -1.5, hi: 1.5, xhi: 10 },
   {
     xlo: { bg: "green.300", fontWeight: "bold" },
     lo: { color: "green.600", fontWeight: "bold" },
@@ -18,7 +18,7 @@ export function WebOwl() {
   return (
     <SharedDataProvider>
       <HStack spacing={4}>
-        <OwlBox header="Test Data">
+        <OwlBox header="WebOwl Test">
           <OwlValue label="Time" field="TIME" formatter={format_date} />
           <OwlValue label="...rel" field="TIME" formatter={format_date_relative} />
           <OwlValue label="Noise" field="NOISE" limits={limits} formatter={format_number(2)} />

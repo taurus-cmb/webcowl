@@ -55,7 +55,7 @@ export function SharedDataProvider({ children }: { children: ReactNode }) {
   const { isLoading, isError, data, error } = useQuery({
     queryKey: ["api_test"],
     queryFn: dataQuery,
-    refetchInterval: 2000,
+    refetchInterval: 1000,
   });
 
   let bg;
