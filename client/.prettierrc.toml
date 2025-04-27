@@ -1,4 +1,0 @@
-# configuration for prettier
-# install with: npm install -g prettier
-# I like its defaults, except width
-printWidth = 100

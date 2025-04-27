@@ -5,46 +5,29 @@ This documents the original setup of the developmnt environments used in this
 project. If setting up for yourself, instead follow the Setup instructions in
 README.md. That will recreate the environments, rather than build from scratch.
 
-Flask API server
+Quart API server
 ================
 
-Flask is a python micro-framework for web applications. In this case I am using
-it just for a REST API server from which the web client can request data.
-
 ```
-# make subdir for API server
-mkdir api
-cd api
 # create python virtual environment
 python -m venv venv
 source venv/bin/activate
-pip install flask python-dotenv numpy
-# hack for getdata. better to install from source
-ln -s /home/sjb/miniconda3/envs/py38/lib/python3.8/site-packages/pygetdata.cpython-38-x86_64-linux-gnu.so venv/lib/python3.8/site-packages/
-```
+pip install 'quart[dotenv]' datastar-py
 
-React web client
-================
+# darkstar python seems to be changing a bit, so be careful when updating
 
-The front-end, and the bulk of the code, will be written in React, a javascript
-user interface library (we use typescript here). The application base will use
-Vite, with the additional libraries TanStack Query and Chakra UI.
+# had to install getdata from source:
+# can configure to use FAKE_DATA if you don't want to bother
+sudo apt install build-essential autoconf automake libtool libltdl-dev
+pip install numpy==1.26 setuptools
+cd path/for/getdata
+git clone https://github.com/ketiltrout/getdata/releases/download/v0.11.0/getdata-0.11.0.tar.xz
+cd getdata
+autoreconf -vifs
+./configure --disable-perl --prefix=$HOME/programs/taurus/webcowl/api/venv
+make
+make install
+# ... and this again doesn't work
 
-```
-# create the client application template
-# assumes npm is installed
-npm create vite@latest
-✔ Project name: … client
-✔ Select a framework: › React
-✔ Select a variant: › TypeScript + SWC
-
-cd client
-npm install
-npm i @tanstack/react-query
-npm i @chakra-ui/react @emotion/react @emotion/styled framer-motion
-
-# routes were gobbbling up API reqeusts, so try to install a router too
-npm install @tanstack/react-router
-npm install --save-dev @tanstack/router-plugin @tanstack/router-devtools
-
+# output the requirements.txt
 ```

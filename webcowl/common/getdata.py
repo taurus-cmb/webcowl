@@ -1,12 +1,7 @@
-from flask import Flask, Blueprint, request
-import os
-from config import Config
-
-app = Flask(__name__)
-app.config.from_object(Config)
-
-api_bp = Blueprint("api", __name__)
-
+__all__ = [
+    "read_latest_data",
+    "fake_latest_data",
+]
 def read_latest_data(fields):
     """Read the latest values of data from a dirfile"""
     import pygetdata as gd
@@ -35,15 +30,3 @@ def fake_latest_data(fields):
     """Simulate some fake data for testing, rather than reading from dirfile"""
     from data_faker import get_fake_data
     return get_fake_data(fields)
-
-@api_bp.route('/latest', methods=["POST"])
-def latest_data():
-    fields = request.json["fields"]
-    if not app.config["FAKE_DATA"]:
-        return read_latest_data(fields)
-    else:
-        return fake_latest_data(fields)
-
-
-# this must happen after the routes are declared
-app.register_blueprint(api_bp, url_prefix="/api")
