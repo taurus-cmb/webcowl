@@ -3,11 +3,17 @@
 {% block title %} Owl {% endblock %}
 
 {% block content %}
-<table>
-    <tr><th colspan="2">Sample Box</th></tr>
-    <tr>
-        <td>Time</td>
-        <td>Current time</td>
-    </tr>
-</table>
+{# separate variable because I can't figure out another way to nest/escape quotes #}
+{% set update_route = url_for("owl.updates") %}
+<div data-on-load="@get('{{ update_route }}')" data-signals="{'field_time': 'loading'}">
+    <table>
+        <tr>
+            <th colspan="2">Sample Box</th>
+        </tr>
+        <tr>
+            <td>Time</td>
+            <td data-text="$field_time">Current time</td>
+        </tr>
+    </table>
+</div>
 {% endblock %}
