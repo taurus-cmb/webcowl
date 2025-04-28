@@ -29,5 +29,5 @@ Running things
 
 ```
 source venv/bin/activate
-QUART_APP=webcowl:main quart run
+QUART_APP=webcowl:app quart run
 ```
