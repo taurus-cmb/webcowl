@@ -30,3 +30,6 @@ nav a:hover {
 .data_label {
     padding-right: 10px;
 }
+.data_value {
+    text-align: right;
+}

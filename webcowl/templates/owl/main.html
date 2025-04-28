@@ -7,14 +7,29 @@
 {% block content %}
 {# separate variable because I can't figure out another way to nest/escape quotes #}
 {% set update_route = url_for("owl.updates") %}
-<div data-on-load="@get('{{ update_route }}')" data-signals="{'field_time': 'loading'}">
+<div
+    data-on-load="@get('{{ update_route }}')"
+    data-signals="{'field_time': 'loading', 'field_index': 'loading', 'field_noise': 'loading', 'field_steppy': 'loading'}"
+>
     <table class="data_box">
         <tr>
             <th colspan="2">Sample Box</th>
         </tr>
         <tr>
             <td class="data_label">Time</td>
-            <td class="data_value" data-text="$field_time">Current time</td>
+            <td class="data_value" data-text="$field_time"></td>
+        </tr>
+        <tr>
+            <td class="data_label">Index</td>
+            <td class="data_value" data-text="$field_index"></td>
+        </tr>
+        <tr>
+            <td class="data_label">Noisy</td>
+            <td class="data_value" data-text="$field_noise"></td>
+        </tr>
+        <tr>
+            <td class="data_label">Steppy</td>
+            <td class="data_value" data-text="$field_steppy"></td>
         </tr>
     </table>
 </div>

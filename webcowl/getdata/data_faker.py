@@ -1,7 +1,6 @@
 import time
 import os
 import random
-import numpy as np
 
 # initial conditions
 start_time = time.time()
