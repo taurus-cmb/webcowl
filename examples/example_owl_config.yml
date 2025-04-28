@@ -1,0 +1,35 @@
+# Overall configuration
+config:
+  data_path: FAKEFAKEFAKE
+
+# define reusable field limits for colour coding
+limits:
+  # with &mylimits defined here, *mylimits can be used later in the file
+  # this is a standard YAML feature I didn't know about before today
+  - &mylimits
+    # other types exist in C++ owl, though you can go a long way with just this one
+    type: value_compare
+    comparisons:
+        # mapping from CSS class name to condition
+        extra_low: "< -10"
+        low: "< -2"
+        high: "> 2"
+        extra_high: "> 10"
+
+# layout of the main owl page
+layout:
+  # array of boxes, starting with the box title
+  - First box:
+    # box configuration. More stuff could go here
+    background-colour: "#eeeeee"
+    colour: "#333333"
+    entries:
+      # array of entries (rows) in the box
+      - {label: "Time", field: "TIME", format: "time:%Y-%m-%d %H:%M:%S"}
+      - {label: "Index", field: "INDEX", format: "val:d"}
+  - Second box:
+    background-colour: "#ee00ee"
+    colour: "#330033"
+    entries:
+      - {label: "Steppy", field: "STEPPY", format: "val:.02f", limits: *mylimits}
+      - {label: "Noise", field: "NOISE", format: "val:.02f", limits: *mylimits}
