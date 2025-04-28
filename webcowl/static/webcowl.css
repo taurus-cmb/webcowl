@@ -18,3 +18,15 @@ nav a {
 nav a:hover {
     background-color: #303;
 }
+.data_box {
+    background-color: #eee;
+    border: #333;
+    border-style: solid;
+    border-radius: 0.5rem;
+    border-width: 1px;
+    padding: 5px;
+    margin: 2px;
+}
+.data_label {
+    padding-right: 10px;
+}

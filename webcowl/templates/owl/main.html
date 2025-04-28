@@ -8,13 +8,13 @@
 {# separate variable because I can't figure out another way to nest/escape quotes #}
 {% set update_route = url_for("owl.updates") %}
 <div data-on-load="@get('{{ update_route }}')" data-signals="{'field_time': 'loading'}">
-    <table>
+    <table class="data_box">
         <tr>
             <th colspan="2">Sample Box</th>
         </tr>
         <tr>
-            <td>Time</td>
-            <td data-text="$field_time">Current time</td>
+            <td class="data_label">Time</td>
+            <td class="data_value" data-text="$field_time">Current time</td>
         </tr>
     </table>
 </div>
