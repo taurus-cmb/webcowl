@@ -13,4 +13,5 @@ app.register_blueprint(owl_bp, url_prefix="/owl")
 async def home():
     return await render_template("home.html")
 
-app.run()
+def main():
+    app.run()
