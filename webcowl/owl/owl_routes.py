@@ -1,34 +1,30 @@
 from quart import Blueprint, render_template
 from datastar_py.quart import ServerSentEventGenerator, make_datastar_response
 import asyncio
+import os
 import time
 from datetime import datetime
 from ..getdata import DataWrapper
+from .owl_renderer import OwlRenderer
 
 __all__ = ["owl_bp"]
 
 owl_bp = Blueprint("owl", __name__)
 
+# TODO make the owl config not just fixed/hardcoded
+path = os.path.join(os.path.dirname(__file__), os.pardir, os.pardir, "examples", "example_owl_config.yml")
+owl_renderer = OwlRenderer(path)
+
 @owl_bp.route("/")
 async def main():
-    return await render_template("owl/main.html")
+    return await owl_renderer.render_template()
 
 @owl_bp.route('/updates')
 async def updates():
-    fields = ["INDEX", "TIME", "NOISE", "STEPPY"]
-    data = DataWrapper(fake=True)
     async def data_updates():
         while True:
-            values = await data.wait_for_new_data(fields)
-            response = {}
-            for field in fields:
-                key = f"field_{field.lower()}"
-                if field.lower() == "time":
-                    val = time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime(values[field]))
-                else:
-                    val = f"{values[field]:.02f}"
-                response[key] = val
-            yield ServerSentEventGenerator.merge_signals(response)
+            update = await owl_renderer.wait_and_render_signal_updates()
+            yield ServerSentEventGenerator.merge_signals(update)
 
     response = await make_datastar_response(data_updates())
     return response

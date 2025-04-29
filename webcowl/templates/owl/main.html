@@ -9,28 +9,20 @@
 {% set update_route = url_for("owl.updates") %}
 <div
     data-on-load="@get('{{ update_route }}')"
-    data-signals="{'field_time': 'loading', 'field_index': 'loading', 'field_noise': 'loading', 'field_steppy': 'loading'}"
+    data-signals="{{ config.signal_spec }}"
 >
-    <table class="data_box">
+    {% for box in config.boxes %}
+    <table style="border: {{ box.color }}; background-color: {{ box.background_color }};" class="data_box">
         <tr>
-            <th colspan="2">Sample Box</th>
+            <th colspan="2" style="color: {{ box.color }};">{{ box.name }}</th>
         </tr>
-        <tr>
-            <td class="data_label">Time</td>
-            <td class="data_value" data-text="$field_time"></td>
-        </tr>
-        <tr>
-            <td class="data_label">Index</td>
-            <td class="data_value" data-text="$field_index"></td>
-        </tr>
-        <tr>
-            <td class="data_label">Noisy</td>
-            <td class="data_value" data-text="$field_noise"></td>
-        </tr>
-        <tr>
-            <td class="data_label">Steppy</td>
-            <td class="data_value" data-text="$field_steppy"></td>
-        </tr>
+        {% for entry in box.entries %}
+            <tr>
+                <td class="data_label">{{ entry.label }}</td>
+                <td class="data_value" data-text="${{ entry.signal_name }}"></td>
+            </tr>
+        {% endfor %}
     </table>
+    {% endfor %}
 </div>
 {% endblock %}

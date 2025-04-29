@@ -19,17 +19,17 @@ limits:
 # layout of the main owl page
 layout:
   # array of boxes, starting with the box title
-  - First box:
+  - name: First box
     # box configuration. More stuff could go here
-    background-colour: "#eeeeee"
-    colour: "#333333"
+    background_color: "#eeeeee"
+    color: "#333333"
     entries:
       # array of entries (rows) in the box
       - {label: "Time", field: "TIME", format: "time:%Y-%m-%d %H:%M:%S"}
       - {label: "Index", field: "INDEX", format: "val:d"}
-  - Second box:
-    background-colour: "#ee00ee"
-    colour: "#330033"
+  - name: Second box
+    background_color: "#eeffee"
+    color: "#003300"
     entries:
-      - {label: "Steppy", field: "STEPPY", format: "val:.02f", limits: *mylimits}
       - {label: "Noise", field: "NOISE", format: "val:.02f", limits: *mylimits}
+      - {label: "Steppy", field: "STEPPY", format: "val:.02f", limits: *mylimits}
