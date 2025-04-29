@@ -28,20 +28,18 @@ class OwlRenderer:
 
         self.data_path = self.parsed_config["config"]["data_path"]
         if self.data_path == "FAKEFAKEFAKE":
-            print("Using fake data")
+            print("Using fake owl data")
             self.data_wrapper = DataWrapper(fake=True)
         else:
-            print("Using data from", self.data_path)
+            print("Using owl data from", self.data_path)
             self.data_wrapper = DataWrapper(self.data_path)
 
         self.boxes = []
         for i, box in enumerate(self.parsed_config["layout"]):
-            print("Adding box:", i, box)
             self.boxes.append(OwlBox(i, **box))
 
         self.all_entries = sum([b.entries for b in self.boxes], [])
         self.all_fields = list(set([e.field for e in self.all_entries]))
-        print("All fields:" , self.all_fields)
 
     def _render_signals(self, data_values):
         """
@@ -76,7 +74,7 @@ class OwlRenderer:
 
 
 class OwlBox:
-    def __init__(self, num, name, entries, color="#333333", background_color="#eeeeee"):
+    def __init__(self, num, name, entries, width=1, color="#333333", background_color="#eeeeee"):
         """
         Parse config for a box
 
@@ -95,8 +93,8 @@ class OwlBox:
         self.name = name
         self.entries = []
         for i, entry in enumerate(entries):
-            print("Adding entry:", num, i, entry)
             self.entries.append(OwlEntry(num, i, **entry))
+        self.width = f"{width*8}rem"
         self.color = color
         self.background_color = background_color
 
@@ -122,10 +120,11 @@ class OwlEntry:
         self.field = field
         self.signal_name = f"field_{self.field}_b{box_num}_e{num}".lower()
         self.format = format
-        if limits is not None:
+        self.limits = limits
+        if self.limits is not None:
             limit_type = limits["type"]
             if limit_type == "value_compare":
-                self.limits = ValueCompareLimits(limits["comparisons"])
+                self.limits = ValueCompareLimits(self.signal_name, limits["comparisons"])
             else:
                 raise ValueError(f"Unknown limit type: {limit_type}")
 
@@ -139,8 +138,17 @@ class OwlEntry:
         elif format_type == "time":
             return time.strftime(format_str, time.gmtime(val))
 
+    def limits_attribute(self):
+        """
+        Output the limits as a datastar attribute
+        """
+        if self.limits is None:
+            return ""
+        else:
+            return self.limits.to_attribute()
+
 class ValueCompareLimits:
-    def __init__(self, comparisons):
+    def __init__(self, signal_name, comparisons):
         """
         Parse config for value comparison styled limits
 
@@ -150,4 +158,22 @@ class ValueCompareLimits:
             Limit specs. keys are CSS class names to display,
             and values are conditions under which to use that class.
         """
+        self.signal_name = signal_name
         self.comparisons = comparisons
+
+    def to_attribute(self):
+        """
+        Render the limits to a datastar attribute to update on web client
+        """
+        classes = []
+        for comparison in self.comparisons:
+            cls = comparison["class"]
+            conds = []
+            op_map = dict(lt="<", gt=">=", eq="==")
+            for op in op_map:
+                if op in comparison:
+                    conds.append(f"${self.signal_name} {op_map[op]} {comparison[op]}")
+            classes.append(f"{cls}: {" && ".join(conds)}")
+        result = "data-class=\"{"
+        result += ", ".join(classes) + "}\""
+        return result

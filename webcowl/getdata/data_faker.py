@@ -23,11 +23,15 @@ def simulate_steppy_noise(t):
         val += 20
     return val
 
+def simulate_triangle_data(t):
+    return (t % 10 - 5) * 3
+
 
 fake_data_fields = {
     "TIME": simulate_time,
     "NOISE": simulate_noise,
     "STEPPY": simulate_steppy_noise,
+    "TRIANGLE": simulate_triangle_data,
 }
 
 # function that can be called from API server to simulate data without dirfile

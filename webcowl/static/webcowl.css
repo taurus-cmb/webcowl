@@ -28,8 +28,40 @@ nav a:hover {
     margin: 2px;
 }
 .data_label {
+    padding-left: 5px;
     padding-right: 10px;
 }
 .data_value {
+    padding-right: 5px;
     text-align: right;
+}
+table {
+    border-collapse: collapse;
+}
+
+/* styles for visual limits indicators */
+.extra_high {
+    background-color: #fcc;
+}
+.extra_high * {
+    font-weight: bolder;
+    color: #900;
+}
+.high .data_value {
+    font-weight: bolder;
+    color: #900;
+}
+.extra_low {
+    background-color: #cfc;
+}
+.extra_low * {
+    font-weight: bolder;
+    color: #090;
+}
+.low .data_value {
+    font-weight: bolder;
+    color: #090;
+}
+.ignore .data_value {
+    color: #777;
 }

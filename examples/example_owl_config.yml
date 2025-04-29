@@ -10,11 +10,15 @@ limits:
     # other types exist in C++ owl, though you can go a long way with just this one
     type: value_compare
     comparisons:
-        # mapping from CSS class name to condition
-        extra_low: "< -10"
-        low: "< -2"
-        high: "> 2"
-        extra_high: "> 10"
+        # class: CSS class to apply in this case
+        # lt: less than condition (upper limit, exclusive)
+        # gt: greater than limit (lower limit, inclusive)
+        # Can use both gt and lt
+        # eq can be used for equality condition. Not recommended for floats
+        - {class: extra_low, lt: -10}
+        - {class: low, gt: -10, lt: -2}
+        - {class: high, gt: 2, lt: 10}
+        - {class: extra_high, gt: 10}
 
 # layout of the main owl page
 layout:
@@ -23,13 +27,16 @@ layout:
     # box configuration. More stuff could go here
     background_color: "#eeeeee"
     color: "#333333"
+    # width is in multiples of 8 rem, a comfortable size of a moderately narrow box
+    width: 2
     entries:
       # array of entries (rows) in the box
       - {label: "Time", field: "TIME", format: "time:%Y-%m-%d %H:%M:%S"}
       - {label: "Index", field: "INDEX", format: "val:d"}
   - name: Second box
-    background_color: "#eeffee"
-    color: "#003300"
+    background_color: "#eeeeff"
+    color: "#000033"
     entries:
-      - {label: "Noise", field: "NOISE", format: "val:.02f", limits: *mylimits}
-      - {label: "Steppy", field: "STEPPY", format: "val:.02f", limits: *mylimits}
+      - {label: "Noise", field: "NOISE", format: "val:.01f", limits: *mylimits}
+      - {label: "Steppy", field: "STEPPY", format: "val:.01f", limits: *mylimits}
+      - {label: "Tri", field: "TRIANGLE", format: "val:.01f", limits: *mylimits}
