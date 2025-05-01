@@ -8,6 +8,7 @@
 {# separate variable because I can't figure out another way to nest/escape quotes #}
 {% set update_route = url_for("owl.updates") %}
 <div
+    class="owl_main"
     data-on-load="@get('{{ update_route }}')"
     data-signals="{{ config.signal_spec }}"
 >
