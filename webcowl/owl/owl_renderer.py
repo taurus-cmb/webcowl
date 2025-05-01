@@ -1,4 +1,5 @@
 import asyncio
+import copy
 import os
 import time
 from yaml import load, Loader
@@ -40,6 +41,12 @@ class OwlRenderer:
 
         self.all_entries = sum([b.entries for b in self.boxes], [])
         self.all_fields = list(set([e.field for e in self.all_entries]))
+
+    def clone(self):
+        """
+        Clone a copy of this object for use in separate requests
+        """
+        return copy.deepcopy(self)
 
     def _render_signals(self, data_values):
         """

@@ -39,4 +39,4 @@ layout:
     entries:
       - {label: "Noise", field: "NOISE", format: "val:.01f", limits: *mylimits}
       - {label: "Steppy", field: "STEPPY", format: "val:.01f", limits: *mylimits}
-      - {label: "Tri", field: "TRIANGLE", format: "val:.01f", limits: *mylimits}
+      - {label: "Triangle", field: "TRIANGLE", format: "val:.01f", limits: *mylimits}

@@ -17,13 +17,14 @@ owl_renderer = OwlRenderer(path)
 
 @owl_bp.route("/")
 async def main():
-    return await owl_renderer.render_template()
+    return await owl_renderer.clone().render_template()
 
 @owl_bp.route('/updates')
 async def updates():
+    local_renderer = owl_renderer.clone()
     async def data_updates():
         while True:
-            update = await owl_renderer.wait_and_render_signal_updates()
+            update = await local_renderer.wait_and_render_signal_updates()
             yield ServerSentEventGenerator.merge_signals(update)
 
     response = await make_datastar_response(data_updates())
