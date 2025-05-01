@@ -1,4 +1,5 @@
 import asyncio
+import quart
 
 __all__ = [
     "DataWrapper",
@@ -78,7 +79,7 @@ class DataWrapper():
         """
         Asynchronously wait for new data, then return it
         """
-        loop = asyncio.get_running_loop()
-        while not await loop.run_in_executor(None, self.check_new_data):
+        while not await quart.utils.run_sync(self.check_new_data)():
+            # TODO is asyncio right to use here? quart have itnernal sleep?
             await asyncio.sleep(self.poll_rate)
-        return await loop.run_in_executor(None, self.read_latest_data, fields)
+        return await quart.utils.run_sync(self.read_latest_data)(fields)

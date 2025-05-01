@@ -1,4 +1,3 @@
-import asyncio
 import copy
 import os
 import time
@@ -63,8 +62,7 @@ class OwlRenderer:
         Waits for new data and renders formatted signal updates
         """
         data_values = await self.data_wrapper.wait_for_new_data(self.all_fields)
-        loop = asyncio.get_running_loop()
-        return await loop.run_in_executor(None, self._render_signals, data_values)
+        return await quart.utils.run_sync(self._render_signals)(data_values)
 
     async def render_template(self):
         """
