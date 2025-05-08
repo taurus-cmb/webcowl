@@ -1,6 +1,5 @@
 import asyncio
 import copy
-import os
 import time
 from yaml import load, Loader
 import quart
@@ -132,9 +131,9 @@ class OwlEntry:
         self.format = format
         self.limits = limits
         if self.limits is not None:
-            limit_type = limits["type"]
+            limit_type = self.limits["type"]
             if limit_type == "value_compare":
-                self.limits = ValueCompareLimits(self.signal_name, limits["comparisons"])
+                self.limits = ValueCompareLimits(self.signal_name, self.limits["comparisons"])
             else:
                 raise ValueError(f"Unknown limit type: {limit_type}")
 

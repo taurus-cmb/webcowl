@@ -1,10 +1,6 @@
-from quart import Blueprint, render_template
+from quart import Blueprint, helpers, current_app
 from datastar_py.quart import ServerSentEventGenerator, make_datastar_response
-import asyncio
 import os
-import time
-from datetime import datetime
-from ..getdata import DataWrapper
 from .owl_renderer import OwlRenderer
 
 __all__ = ["owl_bp"]
