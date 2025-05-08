@@ -1,3 +1,4 @@
+import asyncio
 import copy
 import os
 import time
@@ -57,12 +58,16 @@ class OwlRenderer:
             signals[entry.signal_name] = value
         return signals
 
-    async def wait_and_render_signal_updates(self):
+    async def wait_and_render_signal_updates(self, timeout=None):
         """
         Waits for new data and renders formatted signal updates
         """
-        data_values = await self.data_wrapper.wait_for_new_data(self.all_fields)
-        return await quart.utils.run_sync(self._render_signals)(data_values)
+        try:
+            async with asyncio.timeout(timeout):
+                data_values = await self.data_wrapper.wait_for_new_data(self.all_fields)
+                return await quart.utils.run_sync(self._render_signals)(data_values)
+        except TimeoutError:
+            return {}
 
     async def render_template(self):
         """
