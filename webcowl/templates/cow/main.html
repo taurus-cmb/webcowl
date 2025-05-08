@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %}
+<h1>Cow</h1>
+{% endblock %}
+
+{% block content %}
+{# separate variable because I can't figure out another way to nest/escape quotes #}
+{% set update_route = url_for("cow.updates") %}
+<div
+    class="cow_main"
+    data-on-load="@get('{{ update_route }}')"
+>
+    <span id="cow-time">Dummy value</span>
+</div>
+{% endblock %}

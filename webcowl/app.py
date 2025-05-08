@@ -1,5 +1,6 @@
 from quart import Quart, render_template
 from .owl import owl_bp
+from .cow import cow_bp
 import asyncio
 import signal
 # TODO config
@@ -9,6 +10,7 @@ app = Quart(__name__)
 # TODO config
 #app.config.from_object(Config)
 app.register_blueprint(owl_bp, url_prefix="/owl")
+app.register_blueprint(cow_bp, url_prefix="/cow")
 
 @app.route("/")
 async def home():
