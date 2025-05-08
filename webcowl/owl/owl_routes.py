@@ -22,9 +22,13 @@ async def main():
 @owl_bp.route('/updates')
 async def updates():
     local_renderer = owl_renderer.clone()
+
+    @helpers.stream_with_context
     async def data_updates():
         while True:
-            update = await local_renderer.wait_and_render_signal_updates()
+            if current_app.shutdown_event.is_set():
+                return
+            update = await local_renderer.wait_and_render_signal_updates(timeout=1)
             yield ServerSentEventGenerator.merge_signals(update)
 
     response = await make_datastar_response(data_updates())
