@@ -20,7 +20,6 @@ async def updates():
             if current_app.shutdown_event.is_set():
                 return
             update = f"""<span id="cow-time">Update: {time.time():.2f}"""
-            print("Updating:", update)
             yield ServerSentEventGenerator.merge_fragments(update)
             await asyncio.sleep(0.5)
 
