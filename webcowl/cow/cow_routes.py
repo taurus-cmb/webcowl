@@ -1,4 +1,4 @@
-from quart import Blueprint, helpers, current_app, render_template
+from quart import Blueprint, helpers, current_app, render_template, stream_with_context
 from datastar_py.quart import ServerSentEventGenerator, make_datastar_response
 import asyncio
 from pyface.proto_cmd import ProtoCmd, ProtoCmdError
@@ -26,13 +26,25 @@ def _get_protocmd():
 async def main():
     return await render_template("cow/main.html")
 
+async def _render_cow_command_view(app):
+    async with app.app_context():
+        local_cmd = _get_protocmd()
+        @stream_with_context
+        async def sse_update():
+            update = await render_template(
+                "cow/_command.html", **local_cmd.render_message_view("State")
+            )
+            yield ServerSentEventGenerator.merge_fragments(update)
+
+        return await make_datastar_response(sse_update())
+
 @cow_bp.route("/set_command/<path:cmd_path>", methods=["GET", "POST"])
 async def set_command(cmd_path):
     cmd_split = cmd_path.split("/")
     # remove empty segments from extra /
     cmd_split = [c for c in cmd_split if len(c) > 0]
     _get_protocmd().set_active_command(cmd_split)
-    return ""
+    return await _render_cow_command_view(current_app)
 
 # extra route to handle empty (home) path
 # TODO maybe use the data of the post, rather than its route?
@@ -40,20 +52,6 @@ async def set_command(cmd_path):
 async def set_command_home():
     return await set_command("")
 
-@cow_bp.route('/updates')
+@cow_bp.route('/load')
 async def updates():
-    local_cmd = _get_protocmd()
-
-    @helpers.stream_with_context
-    async def data_updates():
-        while True:
-            if current_app.shutdown_event.is_set():
-                return
-            update = await render_template(
-                "cow/_command.html", **local_cmd.render_message_view("State")
-            )
-            yield ServerSentEventGenerator.merge_fragments(update)
-            await asyncio.sleep(0.5)
-
-    response = await make_datastar_response(data_updates())
-    return response
+    return await _render_cow_command_view(current_app)
