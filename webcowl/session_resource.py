@@ -33,9 +33,13 @@ class SessionResource():
 
     @staticmethod
     def _new_id():
+        """Way that new session IDs are generated"""
         return secrets.token_bytes(16)
 
     def get_resource(self):
+        """
+        Get/create the resource, based on session ID
+        """
         id = session.get(ID_KEY, None)
         if id is None:
             id = self._new_id()
