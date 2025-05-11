@@ -121,7 +121,7 @@ li.cow_home:before {
     font-size: 1.2rem;
     font-weight: bold;
     min-width: 20%;
-    margin-right: 0.4rem;
+    margin-right: 4%;
     float: left;
 }
 .field_description {
@@ -135,7 +135,7 @@ li.cow_home:before {
     font-size: 1.2rem;
     min-width: 12rem;
     padding: 0.4rem;
-    width: 70%;
+    width: 73%;
     float: left;
 }
 /* Clear floats after the columns */
