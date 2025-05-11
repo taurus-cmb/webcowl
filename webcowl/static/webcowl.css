@@ -107,3 +107,6 @@ li.cow_home:before {
     padding-right: 0.4rem;
     padding-bottom: 0.4rem;
 }
+.command_description {
+    font-size: 1.2rem;
+}

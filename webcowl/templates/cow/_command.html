@@ -12,6 +12,10 @@
     </ul>
 </nav>
 
+{% if description|length > 0 %}
+<p class="command_description">{{ description }}</p>
+{% endif %}
+
 {% if messages|length > 0 %}
 <h2>Messages</h2>
 <ul class="message_list">
@@ -19,7 +23,11 @@
         <li>
             {# TODO use meta name for display, if present #}
             {% set message_route = url_for("cow.set_command", cmd_path=message.full_path) %}
-            <button class="cow_command" data-on-click="@post('{{ message_route }}')">{{ message.display_name }}</button>
+            <button
+                class="cow_command"
+                data-on-click="@post('{{ message_route }}')"
+                title="({{ message.name }}) {{ message.description }}"
+            >{{ message.display_name }}</button>
         </li>
     {% endfor %}
 </ul>
