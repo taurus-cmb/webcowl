@@ -20,6 +20,9 @@ nav.topnav a {
 nav.topnav :hover {
     background-color: #303;
 }
+/**************************************************************************
+ * Owl-specific styles
+ */
 .owl_main {
     display: flex;
     flex-flow: row wrap;
@@ -70,4 +73,30 @@ table {
 }
 .ignore .owl_value {
     color: #777;
+}
+
+/**************************************************************************
+ * Cow-specific styles
+ */
+ .cow_command {
+     padding: 0.4rem;
+ }
+.breadcrumb_list {
+    padding-left: 0.4rem;
+    margin-top: 0.4rem;
+    margin-bottom: 0.4rem;
+}
+.breadcrumb_list * {
+    font-size: 1rem;
+    font-weight: bold;
+}
+.breadcrumb_list li {
+    display: inline;
+    padding-right: 0.4rem;
+}
+.breadcrumb_list li:before {
+    content: '>';
+}
+li.cow_home:before {
+    content: none;
 }
