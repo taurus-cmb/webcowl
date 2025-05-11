@@ -2,22 +2,28 @@ from quart import Blueprint, helpers, current_app
 from datastar_py.quart import ServerSentEventGenerator, make_datastar_response
 import os
 from .owl_renderer import OwlRenderer
+from ..session_resource import SessionResource
 
 __all__ = ["owl_bp"]
 
 owl_bp = Blueprint("owl", __name__)
 
-# TODO make the owl config not just fixed/hardcoded
-path = os.path.join(os.path.dirname(__file__), os.pardir, os.pardir, "examples", "example_owl_config.yml")
-owl_renderer = OwlRenderer(path)
+owl_renderers = None
+
+def _get_renderer():
+    global owl_renderers
+    if owl_renderers is None:
+        owl_renderers = SessionResource(OwlRenderer, current_app.config["OWL_FILE"])
+    return owl_renderers.get_resource()
 
 @owl_bp.route("/")
 async def main():
-    return await owl_renderer.clone().render_template()
+    local_renderer = _get_renderer()
+    return await local_renderer.render_template()
 
 @owl_bp.route('/updates')
 async def updates():
-    local_renderer = owl_renderer.clone()
+    local_renderer = _get_renderer()
 
     @helpers.stream_with_context
     async def data_updates():
