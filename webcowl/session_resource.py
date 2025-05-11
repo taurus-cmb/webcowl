@@ -25,7 +25,11 @@ class SessionResource():
             Arguments to pass to new_resource
         """
         self.storage = dict()
-        self.init_new = lambda: new_resource(*args, **kwargs)
+
+        def init_func():
+            return new_resource(*args, **kwargs)
+
+        self.init_new = init_func
 
     @staticmethod
     def _new_id():

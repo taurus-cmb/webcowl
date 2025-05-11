@@ -16,6 +16,6 @@ class Config:
     SECRET_KEY = os.environ.get("WEBCOWL_SECRET_KEY", "testing key: not secret")
     # TODO allow directory of different owl files that can be loaded
     OWL_FILE = os.environ.get("WEBCOWL_OWL_FILE", os.path.join(basedir, "examples", "owl_config.yml"))
-    COW_ROOT_MESSAGE = os.environ.get("WEBCOWL_COW_ROOT_MESSAGE", "system.HKSystem")
+    COW_ROOT_MESSAGE = os.environ.get("WEBCOWL_COW_ROOT_MESSAGE", "system.HKsystem")
     COW_COMMAND_PORT = os.environ.get("WEBCOWL_COW_COMMAND_PORT", ("127.0.0.1", 3006))
     COW_INFO_PORT = os.environ.get("WEBCOWL_OWL_FILE", ("127.0.0.1", 3007))
