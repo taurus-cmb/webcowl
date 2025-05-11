@@ -24,7 +24,7 @@ nav.topnav :hover {
     display: flex;
     flex-flow: row wrap;
 }
-.data_box {
+.owl_box {
     background-color: #eee;
     border: #333;
     border-style: solid;
@@ -33,11 +33,11 @@ nav.topnav :hover {
     padding: 5px;
     margin: 2px;
 }
-.data_label {
+.owl_label {
     padding-left: 5px;
     padding-right: 10px;
 }
-.data_value {
+.owl_value {
     padding-right: 5px;
     text-align: right;
 }
@@ -45,7 +45,7 @@ table {
     border-collapse: collapse;
 }
 
-/* styles for visual limits indicators */
+/* styles for owl visual limits indicators */
 .extra_high {
     background-color: #fcc;
 }
@@ -53,7 +53,7 @@ table {
     font-weight: bolder;
     color: #900;
 }
-.high .data_value {
+.high .owl_value {
     font-weight: bolder;
     color: #900;
 }
@@ -64,10 +64,10 @@ table {
     font-weight: bolder;
     color: #090;
 }
-.low .data_value {
+.low .owl_value {
     font-weight: bolder;
     color: #090;
 }
-.ignore .data_value {
+.ignore .owl_value {
     color: #777;
 }

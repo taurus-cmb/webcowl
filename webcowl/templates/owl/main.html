@@ -13,14 +13,14 @@
     data-signals="{{ config.signal_spec }}"
 >
     {% for box in config.boxes %}
-    <table style="border: {{ box.color }}; background-color: {{ box.background_color }}; width: {{ box.width }}" class="data_box">
+    <table style="border: {{ box.color }}; background-color: {{ box.background_color }}; width: {{ box.width }}" class="owl_box">
         <tr>
             <th colspan="2" style="color: {{ box.color }};">{{ box.name }}</th>
         </tr>
         {% for entry in box.entries %}
             <tr {{ entry.limits_attribute() | safe }}>
-                <td class="data_label">{{ entry.label }}</td>
-                <td class="data_value" data-text="${{ entry.signal_name }}"></td>
+                <td class="owl_label">{{ entry.label }}</td>
+                <td class="owl_value" data-text="${{ entry.signal_name }}"></td>
             </tr>
         {% endfor %}
     </table>
