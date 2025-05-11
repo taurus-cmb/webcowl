@@ -11,7 +11,6 @@ root_message = "system.HKsystem"
 
 command_port = ("127.0.0.1", 3006)
 info_port = ("127.0.0.1", 3007)
-print("info port", info_port)
 
 protocmd = ProtoCmd(info_port, root_message, command_port)
 current_cmd = []
@@ -24,10 +23,8 @@ async def main():
 
 @cow_bp.route("/set_command/<path:cmd_path>", methods=["GET", "POST"])
 async def set_command(cmd_path):
-    print("setting command to:", cmd_path)
     global current_cmd, update_event
     current_cmd = cmd_path.split("/")
-    print("setting command to:", current_cmd)
     # remove empty segments from extra /
     current_cmd = [c for c in current_cmd if len(c) > 0]
     #update_event.set()
