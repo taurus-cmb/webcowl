@@ -35,11 +35,30 @@
 
 {% if fields|length > 0 %}
 <h2>Fields</h2>
-<ul>
-    {% for field in fields %}
-        <li>{{field}}</li>
-    {% endfor %}
+<form class="command_form">
+<ul class="field_list">
+{% for field in fields %}
+    <li><div class="command_field">
+        <div class="label_input_row">
+        <div class="field_label">
+            <label for="{{ field.name }}">{{ field.display_name }}</label>
+        </div>
+        {% if field.is_enum %}
+            <select id="{{ field.name }}">
+                <option value="">Select...</option>
+                {% for name, value in field.enum_values %}
+                    <option value="{{ value }}">{{ name }}</option>
+                {% endfor %}
+            </select>
+        {% else %}
+            <input type="number" id="{{ field.name }}">
+        {% endif %}
+        </div>
+        <span class="field_description">({{ field.name }}) {{ field.description }}</span>
+    </div></li>
+{% endfor %}
 </ul>
+</form>
 {% endif %}
 
 </div>

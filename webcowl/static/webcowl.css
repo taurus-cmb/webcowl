@@ -109,4 +109,38 @@ li.cow_home:before {
 }
 .command_description {
     font-size: 1.2rem;
+    color: #333;
+}
+.command_field {
+    background: #eee;
+    width: 80%;
+    padding: 0.4rem;
+    padding-left: 0.8rem;
+}
+.field_label {
+    font-size: 1.2rem;
+    font-weight: bold;
+    min-width: 20%;
+    margin-right: 0.4rem;
+    float: left;
+}
+.field_description {
+    font-style: italic;
+    color: #333;
+}
+.field_list li {
+    padding-bottom: 0.4rem;
+}
+.field_list input, select {
+    font-size: 1.2rem;
+    min-width: 12rem;
+    padding: 0.4rem;
+    width: 70%;
+    float: left;
+}
+/* Clear floats after the columns */
+.label_input_row::after {
+  content: "";
+  display: table;
+  clear: both;
 }
