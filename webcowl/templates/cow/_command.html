@@ -19,7 +19,7 @@
         <li>
             {# TODO use meta name for display, if present #}
             {% set message_route = url_for("cow.set_command", cmd_path=message.full_path) %}
-            <button class="cow_command" data-on-click="@post('{{ message_route }}')">{{ message.name }}</button>
+            <button class="cow_command" data-on-click="@post('{{ message_route }}')">{{ message.display_name }}</button>
         </li>
     {% endfor %}
 </ul>
