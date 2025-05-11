@@ -100,3 +100,10 @@ table {
 li.cow_home:before {
     content: none;
 }
+.message_list li {
+    display: inline-grid;
+    /* TODO fix me: this doesn't handle labels longer than 12rem */
+    grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
+    padding-right: 0.4rem;
+    padding-bottom: 0.4rem;
+}
