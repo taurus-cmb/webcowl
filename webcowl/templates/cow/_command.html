@@ -12,6 +12,7 @@
     </ul>
 </nav>
 
+{% if messages|length > 0 %}
 <h2>Messages</h2>
 <ul class="message_list">
     {% for message in messages %}
@@ -22,12 +23,15 @@
         </li>
     {% endfor %}
 </ul>
+{% endif %}
 
+{% if fields|length > 0 %}
 <h2>Fields</h2>
 <ul>
     {% for field in fields %}
         <li>{{field}}</li>
     {% endfor %}
 </ul>
+{% endif %}
 
 </div>
