@@ -12,7 +12,12 @@ itsdangerous==2.2.0
 Jinja2==3.1.6
 MarkupSafe==3.0.2
 priority==2.0.0
+protobuf==6.30.2
+protoc-gen-validate==1.2.1
+-e git+ssh://git@github.com/taurus-cmb/tauHK-agent.git@0004e708b5f43b38d79905a3c208e6b0e0dd8ba1#egg=pyface
+python-dotenv==1.1.0
 PyYAML==6.0.2
 Quart==0.20.0
+validate_email==1.3
 Werkzeug==3.1.3
 wsproto==1.2.0
