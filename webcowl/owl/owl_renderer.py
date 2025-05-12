@@ -62,10 +62,9 @@ class OwlRenderer:
         Waits for new data and renders formatted signal updates
         """
         try:
-            async with asyncio.timeout(timeout):
-                data_values = await self.data_wrapper.wait_for_new_data(self.all_fields)
-                return await quart.utils.run_sync(self._render_signals)(data_values)
-        except TimeoutError:
+            data_values = await asyncio.wait_for(self.data_wrapper.wait_for_new_data(self.all_fields), timeout=timeout)
+            return await quart.utils.run_sync(self._render_signals)(data_values)
+        except asyncio.TimeoutError:
             return {}
 
     async def render_template(self):
@@ -182,7 +181,7 @@ class ValueCompareLimits:
             for op in op_map:
                 if op in comparison:
                     conds.append(f"${self.signal_name} {op_map[op]} {comparison[op]}")
-            classes.append(f"{cls}: {" && ".join(conds)}")
+            classes.append(f"{cls}: {' && '.join(conds)}")
         result = "data-class=\"{"
         result += ", ".join(classes) + "}\""
         return result
