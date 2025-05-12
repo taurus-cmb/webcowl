@@ -151,3 +151,11 @@ li.cow_home:before {
   display: table;
   clear: both;
 }
+/* TODO also change the input and the field background on error */
+.field_error {
+    color: #d00;
+    text-decoration-line: underline;
+    text-align: right;
+    margin: 0;
+    padding: 0;
+}
