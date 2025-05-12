@@ -131,12 +131,19 @@ li.cow_home:before {
 .field_list li {
     padding-bottom: 0.4rem;
 }
-.field_list input, select {
+.field_inputs {
+    float: left;
+    display: inline-block;
+    width: 70%;
+}
+.field_list input[type=number], input[type=text], select {
     font-size: 1.2rem;
     min-width: 12rem;
     padding: 0.4rem;
-    width: 73%;
-    float: left;
+    width: 90%;
+}
+.field_list input[type=checkbox] {
+    margin-left: 0.4rem;
 }
 /* Clear floats after the columns */
 .label_input_row::after {

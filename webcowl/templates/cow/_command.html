@@ -35,30 +35,42 @@
 
 {% if fields|length > 0 %}
 <h2>Fields</h2>
-<form class="command_form">
 <ul class="field_list">
 {% for field in fields %}
     <li><div class="command_field">
         <div class="label_input_row">
-        <div class="field_label">
-            <label for="{{ field.name }}">{{ field.display_name }}</label>
+            <div class="field_label">
+                <label for="{{ field.name }}">{{ field.display_name }}</label>
+            </div>
+            <div class="field_inputs">
+            {% set update_signals_route = url_for("cow.update_field") %}
+            {% if field.is_enum %}
+                <select
+                    data-bind="{{ field.signal_name }}"
+                    data-on-change="@post('{{ update_signals_route }}')"
+                >
+                    <option value="">Select...</option>
+                    {% for name, value in field.enum_values %}
+                        <option value="{{ value }}">{{ name }}</option>
+                    {% endfor %}
+                </select>
+            {% else %}
+                <input type="text"
+                    data-bind="{{ field.signal_name }}"
+                    {# on-change isn't triggered for text inputs until defocusing #}
+                    data-on-keydown__debounce.500ms="@post('{{ update_signals_route }}')"
+                >
+            {% endif %}
+            {# TODO CSS to keep this beside the input, at all sizes #}
+            <button data-on-click="${{ field.signal_name }} = ''; @post('{{ update_signals_route }}')">×</button>
+            </div>
         </div>
-        {% if field.is_enum %}
-            <select id="{{ field.name }}">
-                <option value="">Select...</option>
-                {% for name, value in field.enum_values %}
-                    <option value="{{ value }}">{{ name }}</option>
-                {% endfor %}
-            </select>
-        {% else %}
-            <input type="number" id="{{ field.name }}">
-        {% endif %}
-        </div>
+        {% set error_signal %}_error_{{ field.signal_name }}{% endset %}
+        <p class="field_error" data-signals="{ {{ error_signal }}: ''}" data-text="${{ error_signal }}"></p>
         <span class="field_description">({{ field.name }}) {{ field.description }}</span>
     </div></li>
 {% endfor %}
 </ul>
-</form>
 {% endif %}
 
 </div>
