@@ -52,37 +52,20 @@ async def set_command(cmd_path):
 async def set_command_home():
     return await set_command("")
 
-ERR_PREFIX = "_error_"
+async def _update_fields_from_request(app):
+    async with app.app_context():
+        json = await request.json
+        remove, errors = _get_protocmd().update_fields_from_signals(json)
+        async def command_signal_update():
+            yield ServerSentEventGenerator.remove_signals(remove)
+            yield ServerSentEventGenerator.merge_signals(errors)
+
+        return await make_datastar_response(command_signal_update())
 
 @cow_bp.route("/update_field", methods=["POST"])
-# TODO could move most of this code to proto_cmd, if desired
 async def update_field():
-    json = await request.json
-    local_cmd = _get_protocmd()
-    remove = []
-    errors = {}
-    active_path = "/".join(local_cmd.active_path)
-    for signal, value in json.items():
-        path = signal.replace(local_cmd.signal_sep, "/")
-        errkey = ERR_PREFIX + signal
-        if not path.startswith(active_path):
-            remove.append(signal)
-        elif len(value) == 0:
-            # reset errors for empty fields
-            errors[errkey] = ""
-        else:
-            try:
-                # TODO make things consistent between lists and /
-                local_cmd.update_field(path.split("/"), value)
-                errors[errkey] = ""
-            except ProtoCmdError as e:
-                errors[errkey] = "ERROR: " + str(e)
+    return await _update_fields_from_request(current_app)
 
-    async def command_signal_update():
-        yield ServerSentEventGenerator.remove_signals(remove)
-        yield ServerSentEventGenerator.merge_signals(errors)
-
-    return await make_datastar_response(command_signal_update())
 
 # route to load the commands when the page is first visited
 # TODO is it better to do this all as part of the initial page render?
