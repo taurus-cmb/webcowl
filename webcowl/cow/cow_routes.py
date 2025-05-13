@@ -66,6 +66,11 @@ async def _update_fields_from_request(app):
 async def update_field():
     return await _update_fields_from_request(current_app)
 
+@cow_bp.route("/submit", methods=["POST"])
+async def submit():
+    await _update_fields_from_request(current_app)
+    print("Submit")
+    return ""
 
 # route to load the commands when the page is first visited
 # TODO is it better to do this all as part of the initial page render?

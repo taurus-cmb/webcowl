@@ -1,6 +1,10 @@
 {# Template for the cow command fragment. Not a standalone temlate #}
 
-<div id="cow-command-view">
+<div
+    id="cow-command-view"
+    data-signals="{ {% for field in fields %}{{ field.signal_error }}: '',{% endfor %}}"
+    {# data-computed-combined-error="{% for field in fields %}${{ field.signal_error }} + {% endfor %} ''" #}
+>
 <nav>
     <ul class="breadcrumb_list">
     {% set home_route = url_for("cow.set_command", cmd_path="") %}
@@ -21,7 +25,6 @@
 <ul class="message_list">
     {% for message in messages %}
         <li>
-            {# TODO use meta name for display, if present #}
             {% set message_route = url_for("cow.set_command", cmd_path=message.full_path) %}
             <button
                 class="cow_command"
@@ -65,12 +68,21 @@
             <button data-on-click="${{ field.signal_name }} = ''; @post('{{ update_signals_route }}')">×</button>
             </div>
         </div>
-        {% set error_signal %}_error_{{ field.signal_name }}{% endset %}
-        <p class="field_error" data-signals="{ {{ error_signal }}: ''}" data-text="${{ error_signal }}"></p>
+        <p class="field_error" data-text="${{ field.signal_error }}"></p>
         <span class="field_description">({{ field.name }}) {{ field.description }}</span>
     </div></li>
 {% endfor %}
 </ul>
 {% endif %}
+
+{# TODO conditions for when to render submit button or not #}
+{% set submit_route = url_for("cow.submit") %}
+<button
+    id="submit"
+    data-on-click="@post('{{ submit_route }}')"
+    {# data-attr-disabled="$combinedError !== ''" #}
+>Submit</button>
+
+{# <p>Combined: <span data-text="$combinedError"></span></p> #}
 
 </div>
