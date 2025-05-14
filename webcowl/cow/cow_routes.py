@@ -60,16 +60,27 @@ async def _update_fields_from_request(app):
             yield ServerSentEventGenerator.remove_signals(remove)
             yield ServerSentEventGenerator.merge_signals(errors)
 
-        return await make_datastar_response(command_signal_update())
+        has_error = any([len(e) > 0 for e in errors.values()])
+        response = await make_datastar_response(command_signal_update())
+        return has_error, response
 
 @cow_bp.route("/update_field", methods=["POST"])
 async def update_field():
-    return await _update_fields_from_request(current_app)
+    # TODO are some fields mututally exclusive (eg in rtd commands)?
+    # TODO if so then need to also reset value signals, not just errors
+    _, response = await _update_fields_from_request(current_app)
+    return response
 
 @cow_bp.route("/submit", methods=["POST"])
 async def submit():
-    await _update_fields_from_request(current_app)
-    print("Submit")
+    # TODO make empty commands submittable
+    has_error, response = await _update_fields_from_request(current_app)
+    if has_error:
+        print("Aborting submit due to error")
+        return response
+    local_cmd = _get_protocmd()
+    message_dict = local_cmd.get_message_json()
+    print("Submitting:", message_dict)
     return ""
 
 # route to load the commands when the page is first visited
