@@ -78,9 +78,9 @@ table {
 /**************************************************************************
  * Cow-specific styles
  */
- .cow_command {
-     padding: 0.4rem;
- }
+.cow_command {
+    padding: 0.4rem;
+}
 .breadcrumb_list {
     padding-left: 0.4rem;
     margin-top: 0.4rem;
@@ -95,7 +95,7 @@ table {
     padding-right: 0.4rem;
 }
 .breadcrumb_list li:before {
-    content: '>';
+    content: ">";
 }
 li.cow_home:before {
     content: none;
@@ -136,20 +136,22 @@ li.cow_home:before {
     display: inline-block;
     width: 70%;
 }
-.field_list input[type=number], input[type=text], select {
+.field_list input[type="number"],
+input[type="text"],
+select {
     font-size: 1.2rem;
     min-width: 12rem;
     padding: 0.4rem;
     width: 90%;
 }
-.field_list input[type=checkbox] {
+.field_list input[type="checkbox"] {
     margin-left: 0.4rem;
 }
 /* Clear floats after the columns */
 .label_input_row::after {
-  content: "";
-  display: table;
-  clear: both;
+    content: "";
+    display: table;
+    clear: both;
 }
 /* TODO also change the input and the field background on error */
 .field_error {
@@ -166,6 +168,7 @@ button#submit {
     color: #fff;
     border-radius: 5px;
     float: right;
+    margin-right: 20%;
 }
 button#submit:disabled {
     background-color: #aaa;
