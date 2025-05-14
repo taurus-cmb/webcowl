@@ -81,6 +81,9 @@ async def submit():
     local_cmd = _get_protocmd()
     message_dict = local_cmd.get_message_json()
     print("Submitting:", message_dict)
+    local_cmd.submit_message()
+    # TODO communicate success/failure of sending message
+    # TODO clear field value signals after sending
     return ""
 
 # route to load the commands when the page is first visited
