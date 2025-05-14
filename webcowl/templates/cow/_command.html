@@ -75,13 +75,14 @@
 </ul>
 {% endif %}
 
-{# TODO conditions for when to render submit button or not #}
+{% if is_submittable %}
 {% set submit_route = url_for("cow.submit") %}
 <button
     id="submit"
     data-on-click="@post('{{ submit_route }}')"
     {# data-attr-disabled="$combinedError !== ''" #}
 >Submit</button>
+{% endif %}
 
 {# <p>Combined: <span data-text="$combinedError"></span></p> #}
 
