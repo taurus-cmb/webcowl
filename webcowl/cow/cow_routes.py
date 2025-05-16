@@ -1,7 +1,6 @@
-from quart import Blueprint, helpers, current_app, render_template, stream_with_context, request
+from quart import Blueprint, current_app, render_template, stream_with_context, request
 from datastar_py.quart import ServerSentEventGenerator, make_datastar_response
-import asyncio
-from pyface.proto_cmd import ProtoCmd, ProtoCmdError
+from pyface.proto_cmd import ProtoCmd
 from ..session_resource import SessionResource
 
 __all__ = ["cow_bp"]
@@ -79,8 +78,6 @@ async def submit():
         print("Aborting submit due to error")
         return response
     local_cmd = _get_protocmd()
-    message_dict = local_cmd.get_message_json()
-    print("Submitting:", message_dict)
     local_cmd.submit_message()
     # TODO communicate success/failure of sending message
     # TODO clear field value signals after sending
