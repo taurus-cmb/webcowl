@@ -1,0 +1,3 @@
+[submodule "webcowl/proto_command"]
+	path = webcowl/proto_command
+	url = git@github.com:taurus-cmb/proto-command.git

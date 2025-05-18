@@ -1,7 +1,8 @@
 from quart import Blueprint, helpers, current_app, render_template, stream_with_context, request
 from datastar_py.quart import ServerSentEventGenerator, make_datastar_response
 import asyncio
-from pyface.proto_cmd import ProtoCmd, ProtoCmdError
+import importlib
+from ..proto_command.proto_cmd import ProtoCmd, ProtoCmdError
 from ..session_resource import SessionResource
 
 __all__ = ["cow_bp"]
