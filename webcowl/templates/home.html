@@ -1,9 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}
-<h1>Main Page</h1>
-{% endblock %}
-
 {% block content %}
-Welcome to web cowl!
+<h1>Welcome to web cowl!</h1>
+<img class="logo-big" src="{{ url_for('static', filename='cowl.png') }}" alt="Web cowl logo">
 {% endblock %}

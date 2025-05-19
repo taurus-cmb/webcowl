@@ -4,6 +4,7 @@
         <title>Web Cowl</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link rel="stylesheet" href="{{ url_for('static', filename='webcowl.css') }}">
+        <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
         <script
             type="module"
             src="https://cdn.jsdelivr.net/gh/starfederation/datastar@v1.0.0-beta.11/bundles/datastar.js"
@@ -11,12 +12,10 @@
     </head>
     <body>
         <nav class="topnav">
-            <h1><a href="{{ url_for('home') }}">Web Cowl</a></h1>
-            <a href="{{ url_for('cow.main') }}">cow</a>
-            <a href="{{ url_for('owl.main') }}">owl</a>
+            <h1><a href="{{ url_for('home') }}" {% if request.path == url_for('home') %}class="active"{% endif %}>Web Cowl</a></h1>
+            <h1><a href="{{ url_for('cow.main') }}" {% if request.path == url_for('cow.main') %}class="active"{% endif %}>🐮 Cow</a></h1>
+            <h1><a href="{{ url_for('owl.main') }}" {% if request.path == url_for('owl.main') %}class="active"{% endif %}>🦉 Owl</a></h1>
         </nav>
-
-        {% block title %}{% endblock %}
 
         {% block content %}{% endblock %}
     </body>

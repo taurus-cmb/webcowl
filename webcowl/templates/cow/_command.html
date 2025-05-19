@@ -8,7 +8,7 @@
 <nav>
     <ul class="breadcrumb_list">
     {% set home_route = url_for("cow.set_command", cmd_path="") %}
-    <li class="cow_home"><button class="cow_command breadcrumb" data-on-click="@post('{{ home_route }}')">Home</button></li>
+    <li class="cow_home"><button class="cow_command breadcrumb" data-on-click="@post('{{ home_route }}')">Command:</button></li>
     {% for breadcrumb, path in breadcrumbs %}
         {% set breadcrumb_route = url_for("cow.set_command", cmd_path=path) %}
         <li><button class="cow_command breadcrumb" data-on-click="@post('{{ breadcrumb_route }}')">{{ breadcrumb }}</button></li>

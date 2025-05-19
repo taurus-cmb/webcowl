@@ -1,9 +1,14 @@
+img.logo-big {
+    width: 32rem;
+    height: auto;
+}
 nav {
     display: flex;
     background-color: #aaa;
 }
 nav.topnav {
     height: 50px;
+    margin-bottom: 0.4rem;
 }
 nav.topnav * {
     display: inline-block;
@@ -19,6 +24,11 @@ nav.topnav a {
 }
 nav.topnav :hover {
     background-color: #303;
+}
+nav.topnav .active {
+    color: #ff0;
+    border: 2px solid #ff0;
+    box-sizing: border-box;
 }
 /**************************************************************************
  * Owl-specific styles
