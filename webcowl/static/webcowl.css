@@ -21,14 +21,16 @@ nav.topnav a {
     padding-left: 15px;
     background-color: #333;
     color: white;
+    /* same border size as active, but invisible */
+    border: 4px solid #333;
+    box-sizing: border-box;
 }
 nav.topnav :hover {
     background-color: #303;
 }
 nav.topnav .active {
     color: #ff0;
-    border: 2px solid #ff0;
-    box-sizing: border-box;
+    border: 4px outset #ff0;
 }
 /**************************************************************************
  * Owl-specific styles
