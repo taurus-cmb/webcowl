@@ -21,6 +21,8 @@ async def main():
     local_renderer = _get_renderer()
     return await local_renderer.render_template()
 
+# TODO close SSE when navigating to other page
+# TODO not critical, but I'm seeing JS errors in browser console
 @owl_bp.route('/updates')
 async def updates():
     local_renderer = _get_renderer()
