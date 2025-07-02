@@ -32,6 +32,7 @@ layout:
     entries:
       # array of entries (rows) in the box
       - {label: "Time", field: "TIME", format: "time:%Y-%m-%d %H:%M:%S"}
+      - {label: "Updated", field: "TIME", format: "reltime:"}
       - {label: "Index", field: "INDEX", format: "val:d"}
   - name: Second box
     background_color: "#eeeeff"

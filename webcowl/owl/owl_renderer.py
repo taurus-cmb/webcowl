@@ -71,13 +71,18 @@ class OwlRenderer:
         """
         Render this object to its template.
         """
+        format_str = "%Y-%m-%d %H:%M:%S"
         # the signal update code can be used here to set the initial spec
         # populated with meaningful starting values
         # force data wrapper to load immediately without waiting for new values
         self.data_wrapper.last_index = None
         signals = await self.wait_and_render_signal_updates()
         self.signal_spec = str(signals)
-        return await quart.render_template("owl/main.html", config=self)
+        print(self.boxes[0].entries[0].signal_name)
+        print(type(self.boxes[0].entries[0].signal_name))
+        #updateTime = time.strptime(self.boxes[0].entries[0].signal_name, format_str)
+        self.last_update = self.boxes[0].entries[0].signal_name #time.time() - datetime.mktime(updateTime)
+        return await quart.render_template("owl/main.html", config=self, updated=self.last_update)
 
 
 
@@ -145,6 +150,9 @@ class OwlEntry:
             return ("{:" + format_str + "}").format(val)
         elif format_type == "time":
             return time.strftime(format_str, time.gmtime(val))
+        elif format_type == "reltime":
+            seconds = round(time.time() - val)
+            return (str(seconds) + " seconds ago")
 
     def limits_attribute(self):
         """
